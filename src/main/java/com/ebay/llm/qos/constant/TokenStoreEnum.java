@@ -1,4 +1,4 @@
-package com.ebay.llm.qos.service;
+package com.ebay.llm.qos.constant;
 
 public enum TokenStoreEnum {
   REDIS,

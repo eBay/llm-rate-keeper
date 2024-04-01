@@ -4,6 +4,7 @@ import com.ebay.llm.qos.config.Client;
 import com.ebay.llm.qos.config.ClientModel;
 import com.ebay.llm.qos.config.ConfigLoader;
 import com.ebay.llm.qos.config.ModelClientConfig;
+import com.ebay.llm.qos.constant.TokenStoreEnum;
 import com.ebay.llm.qos.store.TokenStore;
 import io.lettuce.core.RedisClient;
 import java.io.IOException;
