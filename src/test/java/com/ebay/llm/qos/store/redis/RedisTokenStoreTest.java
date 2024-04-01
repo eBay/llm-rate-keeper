@@ -1,5 +1,10 @@
 package com.ebay.llm.qos.store.redis;
 
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
@@ -8,7 +13,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import static org.mockito.Mockito.*;
 
 class RedisTokenStoreTest {
 
@@ -28,7 +32,7 @@ class RedisTokenStoreTest {
     MockitoAnnotations.openMocks(this);
     when(mockRedisClient.connect()).thenReturn(mockConnection);
     when(mockConnection.sync()).thenReturn(mockSyncCommands);
-    redisTokenStore = new RedisTokenStore(mockRedisClient,false);
+    redisTokenStore = new RedisTokenStore(mockRedisClient, false);
   }
 
   @Test
@@ -44,7 +48,8 @@ class RedisTokenStoreTest {
     when(mockSyncCommands.get(dayKey)).thenReturn("50,1616161616161");
 
     // Act
-    boolean result = redisTokenStore.hasTokens(clientId, modelId, tokensPerMinuteLimit, tokensPerDayLimit);
+    boolean result = redisTokenStore.hasTokens(clientId, modelId, tokensPerMinuteLimit,
+        tokensPerDayLimit);
 
     // Assert
     Assertions.assertTrue(result);
@@ -66,7 +71,8 @@ class RedisTokenStoreTest {
     when(mockSyncCommands.get(dayKey)).thenReturn(null);
 
     // Act
-    redisTokenStore.consumeTokens(clientId, modelId, tokens, tokensPerMinuteLimit, tokensPerDayLimit);
+    redisTokenStore.consumeTokens(clientId, modelId, tokens, tokensPerMinuteLimit,
+        tokensPerDayLimit);
 
     // Assert
     verify(mockSyncCommands).set(eq(minuteKey), anyString());

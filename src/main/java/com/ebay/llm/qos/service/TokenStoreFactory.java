@@ -5,7 +5,6 @@ import com.ebay.llm.qos.store.TokenStore;
 import com.ebay.llm.qos.store.nukv.NUKVTokenStore;
 import com.ebay.llm.qos.store.redis.RedisTokenStore;
 import io.lettuce.core.RedisClient;
-import lombok.NonNull;
 
 public class TokenStoreFactory {
 

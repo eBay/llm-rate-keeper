@@ -1,7 +1,9 @@
 package com.ebay.llm.qos.constant;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 class TokenStoreEnumTest {
 

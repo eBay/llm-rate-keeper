@@ -1,7 +1,6 @@
 package com.ebay.llm.qos.service;
 
 import com.ebay.llm.qos.constant.TokenStoreEnum;
-import com.ebay.llm.qos.service.TokenStoreFactory;
 import com.ebay.llm.qos.store.TokenStore;
 import com.ebay.llm.qos.store.nukv.NUKVTokenStore;
 import com.ebay.llm.qos.store.redis.RedisTokenStore;
@@ -18,7 +17,8 @@ public class TokenStoreFactoryTest {
     RedisClient redisClient = Mockito.mock(RedisClient.class);
     StatefulRedisConnection statefulRedisConnection = Mockito.mock(StatefulRedisConnection.class);
     Mockito.when(redisClient.connect()).thenReturn(statefulRedisConnection);
-    TokenStore tokenStore = TokenStoreFactory.createTokenStore(TokenStoreEnum.REDIS, redisClient, true);
+    TokenStore tokenStore = TokenStoreFactory.createTokenStore(TokenStoreEnum.REDIS, redisClient,
+        true);
     Assertions.assertTrue(tokenStore instanceof RedisTokenStore);
   }
 
@@ -27,7 +27,8 @@ public class TokenStoreFactoryTest {
     RedisClient redisClient = Mockito.mock(RedisClient.class);
     StatefulRedisConnection statefulRedisConnection = Mockito.mock(StatefulRedisConnection.class);
     Mockito.when(redisClient.connect()).thenReturn(statefulRedisConnection);
-    TokenStore tokenStore = TokenStoreFactory.createTokenStore(TokenStoreEnum.NUKV, redisClient, true);
+    TokenStore tokenStore = TokenStoreFactory.createTokenStore(TokenStoreEnum.NUKV, redisClient,
+        true);
     Assertions.assertTrue(tokenStore instanceof NUKVTokenStore);
   }
 
