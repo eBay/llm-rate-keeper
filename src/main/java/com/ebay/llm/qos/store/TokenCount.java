@@ -2,7 +2,6 @@ package com.ebay.llm.qos.store;
 
 import java.time.Instant;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

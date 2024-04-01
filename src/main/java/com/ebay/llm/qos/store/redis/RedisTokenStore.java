@@ -22,11 +22,11 @@ public class RedisTokenStore implements TokenStore {
 
   private final RedisClient redisClient;
   private final StatefulRedisConnection<String, String> connection;
-  private RedisCommands<String, String> syncCommands;
-  private RedisAsyncCommands<String, String> asyncCommands;
   private final TokenCountManager tokenCountManager;
   private final KeyGenerator keyGenerator;
   private final boolean isAsync;
+  private RedisCommands<String, String> syncCommands;
+  private RedisAsyncCommands<String, String> asyncCommands;
 
   public RedisTokenStore(RedisClient redisClient, boolean isAsync) {
     this.redisClient = redisClient;
@@ -43,27 +43,32 @@ public class RedisTokenStore implements TokenStore {
   }
 
   @Override
-  public boolean hasTokens(String clientId, String modelId, long tokensPerMinuteLimit, long tokensPerDayLimit) {
+  public boolean hasTokens(String clientId, String modelId, long tokensPerMinuteLimit,
+      long tokensPerDayLimit) {
     try {
       boolean hasTokens = checkTokens(clientId, modelId, tokensPerMinuteLimit, tokensPerDayLimit);
       return hasTokens;
     } catch (Exception e) {
-      throw new TokenStoreException("Error checking tokens for client " + clientId + " and model " + modelId, e);
+      throw new TokenStoreException(
+          "Error checking tokens for client " + clientId + " and model " + modelId, e);
     }
   }
 
   @Override
-  public void consumeTokens(String clientId, String modelId, long tokens, long tokensPerMinuteLimit, long tokensPerDayLimit) {
+  public void consumeTokens(String clientId, String modelId, long tokens, long tokensPerMinuteLimit,
+      long tokensPerDayLimit) {
     try {
       consume(clientId, modelId, tokens, tokensPerMinuteLimit, tokensPerDayLimit);
     } catch (Exception e) {
-      throw new TokenStoreException("Error consuming tokens for client " + clientId + " and model " + modelId, e);
+      throw new TokenStoreException(
+          "Error consuming tokens for client " + clientId + " and model " + modelId, e);
     }
   }
 
   @Override
   public void setCoolingPeriod(String modelId, int durationInMilliSeconds) {
-    log.info("Setting cooling period of {} milliseconds for model {}", durationInMilliSeconds, modelId);
+    log.info("Setting cooling period of {} milliseconds for model {}", durationInMilliSeconds,
+        modelId);
     if (isAsync) {
       asyncCommands.setex(COOLING_KEY_PREFIX + modelId, durationInMilliSeconds / 1000, TRUE_VALUE);
     } else {
@@ -83,7 +88,8 @@ public class RedisTokenStore implements TokenStore {
         isReady = syncCommands.get(COOLING_KEY_PREFIX + modelId) == null;
       }
     } catch (Exception e) {
-      throw new TokenStoreException("Error checking if model is ready to serve for model " + modelId, e);
+      throw new TokenStoreException(
+          "Error checking if model is ready to serve for model " + modelId, e);
     }
     log.info("Model {} is ready to serve: {}", modelId, isReady);
     return isReady;
@@ -100,7 +106,8 @@ public class RedisTokenStore implements TokenStore {
     log.info("Reset cooling period for model {}", modelId);
   }
 
-  private boolean checkTokens(String clientId, String modelId, long tokensPerMinuteLimit, long tokensPerDayLimit) throws ExecutionException, InterruptedException {
+  private boolean checkTokens(String clientId, String modelId, long tokensPerMinuteLimit,
+      long tokensPerDayLimit) throws ExecutionException, InterruptedException {
     String minuteKey = keyGenerator.generateKey(clientId, modelId, "minute");
     String dayKey = keyGenerator.generateKey(clientId, modelId, "day");
 
@@ -111,7 +118,8 @@ public class RedisTokenStore implements TokenStore {
         && tokenCountManager.sumTokens(dayCounts) <= tokensPerDayLimit;
   }
 
-  private void consume(String clientId, String modelId, long tokens, long tokensPerMinuteLimit, long tokensPerDayLimit) throws ExecutionException, InterruptedException {
+  private void consume(String clientId, String modelId, long tokens, long tokensPerMinuteLimit,
+      long tokensPerDayLimit) throws ExecutionException, InterruptedException {
     String minuteKey = keyGenerator.generateKey(clientId, modelId, "minute");
     String dayKey = keyGenerator.generateKey(clientId, modelId, "day");
 
@@ -142,6 +150,7 @@ public class RedisTokenStore implements TokenStore {
       throw new TokenStoreException("Error getting token counts for key " + key, e);
     }
   }
+
   private void updateTokenCounts(String key, Deque<TokenCount> tokenCounts) {
     try {
       String value = tokenCountManager.updateTokenCounts(tokenCounts);

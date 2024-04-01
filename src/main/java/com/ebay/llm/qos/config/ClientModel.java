@@ -6,7 +6,13 @@ import lombok.Data;
 public class ClientModel {
 
   private String id;
-  private Integer tokensLimitPerMinute;
-  private Integer tokensLimitPerDay;
+  private Long tokensLimitPerMinute;
+  private Long tokensLimitPerDay;
   private String fallback;
+
+  public Long getTokensLimitPerDay() {
+    return tokensLimitPerDay;
+  }
+
+
 }

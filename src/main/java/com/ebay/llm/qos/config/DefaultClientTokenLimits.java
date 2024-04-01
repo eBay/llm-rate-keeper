@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class DefaultClientTokenLimits {
 
-  private Integer tokensLimitPerMinute;
-  private Integer tokensLimitPerDay;
+  private Long tokensLimitPerMinute;
+  private Long tokensLimitPerDay;
 }

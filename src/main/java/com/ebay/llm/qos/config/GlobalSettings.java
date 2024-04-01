@@ -5,8 +5,8 @@ import lombok.Data;
 @Data
 public class GlobalSettings {
 
-  private Integer apiCallsLimitPerMinute;
-  private Integer tokensLimitPerMinute;
-  private Integer tokensLimitPerDay;
-  private Integer coolingPeriodSeconds;
+  private Long apiCallsLimitPerMinute;
+  private Long tokensLimitPerMinute;
+  private Long tokensLimitPerDay;
+  private Long coolingPeriodSeconds;
 }

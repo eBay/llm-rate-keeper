@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class RateLimits {
 
-  private Integer apiLimitPerMinute;
-  private Integer tokensLimitPerMinute;
-  private Integer tokensLimitPerDay;
+  private Long apiLimitPerMinute;
+  private Long tokensLimitPerMinute;
+  private Long tokensLimitPerDay;
 }
