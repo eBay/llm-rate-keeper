@@ -25,8 +25,6 @@ public class ConfigLoader {
     ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
     ModelClientConfig config = mapper.readValue(new File(fileName), ModelClientConfig.class);
 
-    // Validate the config
-    // Assuming validation is done by checking if config is not null
     if (config == null) {
       throw new IOException("Invalid config: " + fileName);
     }

@@ -44,7 +44,6 @@ clients:
       - id: "modelC"
         tokensLimitPerMinute: 30
         tokensLimitPerDay: 1800
-        fallback: null # No fallback for the last model
     rateLimits:
       apiLimitPerMinute: 60
       tokensLimitPerMinute: 100
