@@ -86,6 +86,12 @@
             <goals>
               <goal>report</goal>
             </goals>
+            <configuration>
+              <!-- Exclude package from coverage -->
+              <excludes>
+                <exclude>com/ebay/llm/qos/config/**</exclude>
+              </excludes>
+            </configuration>
           </execution>
           <!-- This execution ensures that the code coverage metrics are met -->
           <execution>

@@ -18,7 +18,7 @@ public class ConfigLoaderTest {
   void shouldLoadValidConfig() throws IOException {
     ConfigLoader configLoader = new ConfigLoader();
     ModelClientConfig config = configLoader.loadConfig(
-        "src/test/resources/model-client-config.yml");
+        "model-client-config.yml");
     assertEquals(6000, config.getGlobalSettings().getTokensLimitPerDay());
   }
 

@@ -9,10 +9,4 @@ public class ClientModel {
   private Long tokensLimitPerMinute;
   private Long tokensLimitPerDay;
   private String fallback;
-
-  public Long getTokensLimitPerDay() {
-    return tokensLimitPerDay;
-  }
-
-
 }

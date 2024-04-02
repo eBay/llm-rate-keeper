@@ -2,10 +2,8 @@ package com.ebay.llm.qos.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.InputStream;
 
 public class ConfigLoader {
 
@@ -14,16 +12,13 @@ public class ConfigLoader {
       throw new IllegalArgumentException("File name cannot be null or empty");
     }
 
-    if (!Files.exists(Paths.get(fileName))) {
+    InputStream is = getClass().getClassLoader().getResourceAsStream(fileName);
+    if (is == null) {
       throw new IOException("File does not exist: " + fileName);
     }
 
-    if (!Files.isReadable(Paths.get(fileName))) {
-      throw new IOException("File cannot be read: " + fileName);
-    }
-
     ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-    ModelClientConfig config = mapper.readValue(new File(fileName), ModelClientConfig.class);
+    ModelClientConfig config = mapper.readValue(is, ModelClientConfig.class);
 
     if (config == null) {
       throw new IOException("Invalid config: " + fileName);

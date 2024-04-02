@@ -1,10 +1,15 @@
 package com.ebay.llm.qos.store.redis;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.ebay.llm.qos.store.exception.TokenStoreException;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
@@ -52,7 +57,7 @@ class RedisTokenStoreTest {
         tokensPerDayLimit);
 
     // Assert
-    Assertions.assertTrue(result);
+    assertTrue(result);
     verify(mockSyncCommands).get(minuteKey);
     verify(mockSyncCommands).get(dayKey);
   }
@@ -79,6 +84,72 @@ class RedisTokenStoreTest {
     verify(mockSyncCommands).set(eq(dayKey), anyString());
   }
 
+  @Test
+  void testIsModelReadyToServeWhenNotInCoolingPeriod() {
+    // Arrange
+    String modelId = "model1";
+    when(mockSyncCommands.get(eq("cooling:" + modelId))).thenReturn(null);
+
+    // Act
+    boolean result = redisTokenStore.isModelReadyToServe(modelId);
+
+    // Assert
+    assertTrue(result);
+  }
+
+  @Test
+  void testResetCoolingPeriod() {
+    // Arrange
+    String modelId = "model1";
+
+    // Act
+    redisTokenStore.resetCoolingPeriod(modelId);
+
+    // Assert
+    verify(mockSyncCommands).del(eq("cooling:" + modelId));
+  }
+
+  @Test
+  void testSetCoolingPeriod() {
+    // Arrange
+    String modelId = "model1";
+    int durationInMilliseconds = 60000;
+
+    // Act
+    redisTokenStore.setCoolingPeriod(modelId, durationInMilliseconds);
+
+    // Assert
+    verify(mockSyncCommands).setex(eq("cooling:" + modelId), eq(60L), eq("true"));
+  }
+
+  @Test
+  void testIsModelReadyToServeWhenInCoolingPeriod() {
+    // Arrange
+    String modelId = "model1";
+    when(mockSyncCommands.get(eq("cooling:" + modelId))).thenReturn("true");
+
+    // Act
+    boolean result = redisTokenStore.isModelReadyToServe(modelId);
+
+    // Assert
+    assertFalse(result);
+  }
+
+  @Test
+  void testConsumeThrowsException() {
+    // Arrange
+    String clientId = "client1";
+    String modelId = "model1";
+    long tokens = 5;
+    long tokensPerMinuteLimit = 10;
+    long tokensPerDayLimit = 100;
+    doThrow(new RuntimeException("Redis error")).when(mockSyncCommands).set(anyString(), anyString());
+
+    // Act and Assert
+    assertThrows(TokenStoreException.class, () -> {
+      redisTokenStore.consumeTokens(clientId, modelId, tokens, tokensPerMinuteLimit, tokensPerDayLimit);
+    });
+  }
 
   @Test
   void testShutdown() {
