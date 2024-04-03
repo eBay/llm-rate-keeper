@@ -18,8 +18,7 @@ public class TokenStoreFactory {
         return new RedisTokenStore(redisClient, isAsync);
       case NUKV:
         return new NUKVTokenStore();
-      default:
-        throw new IllegalArgumentException("Invalid client preference: " + tokenStoreEnum);
     }
+    return null;
   }
 }

@@ -39,4 +39,40 @@ public class TokenStoreFactoryTest {
         TokenStoreFactory.createTokenStore(null, redisClient, true)
     );
   }
+
+  @Test
+  public void createTokenStore_returnsRedisTokenStore_whenRedisEnumIsPassedAndAsyncIsTrue() {
+    RedisClient redisClient = Mockito.mock(RedisClient.class);
+    StatefulRedisConnection statefulRedisConnection = Mockito.mock(StatefulRedisConnection.class);
+    Mockito.when(redisClient.connect()).thenReturn(statefulRedisConnection);
+    TokenStore tokenStore = TokenStoreFactory.createTokenStore(TokenStoreEnum.REDIS, redisClient, true);
+    Assertions.assertTrue(tokenStore instanceof RedisTokenStore);
+  }
+
+  @Test
+  public void createTokenStore_returnsRedisTokenStore_whenRedisEnumIsPassedAndAsyncIsFalse() {
+    RedisClient redisClient = Mockito.mock(RedisClient.class);
+    StatefulRedisConnection statefulRedisConnection = Mockito.mock(StatefulRedisConnection.class);
+    Mockito.when(redisClient.connect()).thenReturn(statefulRedisConnection);
+    TokenStore tokenStore = TokenStoreFactory.createTokenStore(TokenStoreEnum.REDIS, redisClient, false);
+    Assertions.assertTrue(tokenStore instanceof RedisTokenStore);
+  }
+
+  @Test
+  public void createTokenStore_returnsNUKVTokenStore_whenNUKVEnumIsPassedAndAsyncIsTrue() {
+    RedisClient redisClient = Mockito.mock(RedisClient.class);
+    StatefulRedisConnection statefulRedisConnection = Mockito.mock(StatefulRedisConnection.class);
+    Mockito.when(redisClient.connect()).thenReturn(statefulRedisConnection);
+    TokenStore tokenStore = TokenStoreFactory.createTokenStore(TokenStoreEnum.NUKV, redisClient, true);
+    Assertions.assertTrue(tokenStore instanceof NUKVTokenStore);
+  }
+
+  @Test
+  public void createTokenStore_returnsNUKVTokenStore_whenNUKVEnumIsPassedAndAsyncIsFalse() {
+    RedisClient redisClient = Mockito.mock(RedisClient.class);
+    StatefulRedisConnection statefulRedisConnection = Mockito.mock(StatefulRedisConnection.class);
+    Mockito.when(redisClient.connect()).thenReturn(statefulRedisConnection);
+    TokenStore tokenStore = TokenStoreFactory.createTokenStore(TokenStoreEnum.NUKV, redisClient, false);
+    Assertions.assertTrue(tokenStore instanceof NUKVTokenStore);
+  }
 }
