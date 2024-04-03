@@ -77,7 +77,7 @@ class RateLimiterTest {
   void isModelCanServe_returnsFalse_whenModelIsCoolingPeriod() throws InterruptedException {
     // Given
     String modelId = "testModel";
-    tokenStore.setCoolingPeriod(modelId, 1000);
+    rateLimiter.registerCoolingPeriod(modelId, 1000);
     boolean result = rateLimiter.isModelCanServe(modelId);
     // Then
     assertFalse(result);
@@ -128,5 +128,6 @@ class RateLimiterTest {
     // Then
     assertFalse(result);
   }
+
 
 }
