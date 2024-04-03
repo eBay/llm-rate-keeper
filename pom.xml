@@ -110,7 +110,17 @@
   </dependencies>
   <groupId>com.ebay.llm</groupId>
 
-  <modelVersion>4.0.0</modelVersion>
+  <distributionManagement>
+    <repository>
+      <id>raptor.releases</id>
+      <url>http://ebaycentral.qa.ebay.com/content/repositories/releases/</url>
+    </repository>
+    <snapshotRepository>
+      <id>raptor.snapshots</id>
+      <url>http://ebaycentral.qa.ebay.com/content/repositories/snapshots/</url>
+    </snapshotRepository>
+  </distributionManagement>
+
 
   <profiles>
     <profile>
@@ -167,16 +177,6 @@
         </plugins>
       </build>
       <id>unit-tests</id>
-      <distributionManagement>
-        <repository>
-          <id>raptor.releases</id>
-          <url>http://ebaycentral.qa.ebay.com/content/repositories/releases/</url>
-        </repository>
-        <snapshotRepository>
-          <id>raptor.snapshots</id>
-          <url>http://ebaycentral.qa.ebay.com/content/repositories/snapshots/</url>
-        </snapshotRepository>
-      </distributionManagement>
     </profile>
 
     <profile>
@@ -213,6 +213,6 @@
     </developer>
   </developers>
 
-
+  <modelVersion>4.0.0</modelVersion>
   <version>1.0.0-SNAPSHOT</version>
 </project>
