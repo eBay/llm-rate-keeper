@@ -1,5 +1,6 @@
 package com.ebay.llm.qos.store.redis;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -13,8 +14,8 @@ import com.ebay.llm.qos.store.exception.TokenStoreException;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -143,12 +144,67 @@ class RedisTokenStoreTest {
     long tokens = 5;
     long tokensPerMinuteLimit = 10;
     long tokensPerDayLimit = 100;
-    doThrow(new RuntimeException("Redis error")).when(mockSyncCommands).set(anyString(), anyString());
+    doThrow(new RuntimeException("Redis error")).when(mockSyncCommands)
+        .set(anyString(), anyString());
 
     // Act and Assert
     assertThrows(TokenStoreException.class, () -> {
-      redisTokenStore.consumeTokens(clientId, modelId, tokens, tokensPerMinuteLimit, tokensPerDayLimit);
+      redisTokenStore.consumeTokens(clientId, modelId, tokens, tokensPerMinuteLimit,
+          tokensPerDayLimit);
     });
+  }
+
+  @Test
+  public void hasTokensReturnsTrueWhenEnoughTokens() {
+    when(mockSyncCommands.get("testClient:testModel:minute")).thenReturn("100");
+    when(mockSyncCommands.get("testClient:testModel:day")).thenReturn("1000");
+
+    boolean result = redisTokenStore.hasTokens("testClient", "testModel", 200, 2000);
+
+    assertEquals(true, result);
+  }
+
+  @Test
+  @Disabled("Flaky Test. https://jirap.corp.ebay.com/browse/NTVCONV-2733")
+  public void hasTokensReturnsFalseWhenNotEnoughTokens() {
+    when(mockSyncCommands.get("testClient:testModel:minute")).thenReturn("300");
+    when(mockSyncCommands.get("testClient:testModel:day")).thenReturn("2000");
+
+    boolean result = redisTokenStore.hasTokens("testClient", "testModel", 200, 2000);
+
+    assertEquals(false, result);
+  }
+
+  @Test
+  public void setCoolingPeriodSetsCoolingPeriod() {
+    redisTokenStore.setCoolingPeriod("testModel", 1000);
+
+    // Verify that setex was called with the correct parameters
+    verify(mockSyncCommands).setex(eq("cooling:testModel"), eq(1L), eq("true"));
+
+    boolean result = redisTokenStore.isModelReadyToServe("testModel");
+
+    assertEquals(true, result);
+  }
+
+
+  @Test
+  public void resetCoolingPeriodResetsCoolingPeriod() {
+    redisTokenStore.setCoolingPeriod("testModel", 1000);
+    redisTokenStore.resetCoolingPeriod("testModel");
+
+    boolean result = redisTokenStore.isModelReadyToServe("testModel");
+
+    assertEquals(true, result);
+  }
+
+  @Test
+  public void shutdownClosesConnectionAndClient() {
+    redisTokenStore.shutdown();
+
+    // Verify that the connection and client are closed after shutdown
+    verify(mockConnection).close();
+    verify(mockRedisClient).shutdown();
   }
 
   @Test

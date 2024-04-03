@@ -141,8 +141,14 @@ public class RedisTokenStore implements TokenStore {
     try {
       String value;
       if (isAsync) {
+        if (asyncCommands == null) {
+          throw new IllegalStateException("asyncCommands has not been initialized");
+        }
         value = asyncCommands.get(key).get();
       } else {
+        if (syncCommands == null) {
+          throw new IllegalStateException("syncCommands has not been initialized");
+        }
         value = syncCommands.get(key);
       }
       return tokenCountManager.getTokenCounts(value);
