@@ -1,0 +1,50 @@
+globalSettings:
+  apiCallsLimitPerMinute: 60
+  tokensLimitPerMinute: 100
+  tokensLimitPerDay: 6000
+  coolingPeriodSeconds: 60 # Duration in seconds for the cooling period
+
+models:
+  - id: "modelA"
+    description: "High-capacity model for premium clients"
+    apiLimitPerMinute: 60
+    tokensLimitPerRequest: 1000
+    tokensLimitPerMinute: 80
+    coolingPeriodSeconds: 60
+  - id: "modelB"
+    description: "Mid-range model for standard clients"
+    apiLimitPerMinute: 60
+    tokensLimitPerRequest: 2000
+    tokensLimitPerMinute: 50
+    coolingPeriodSeconds: 60
+  - id: "modelC"
+    description: "Low-capacity model for budget clients"
+    apiLimitPerMinute: 60
+    tokensLimitPerRequest: 1500
+    tokensLimitPerMinute: 30
+    coolingPeriodSeconds: 60
+
+defaultClientTokenLimits:
+  tokensLimitPerMinute: 100 # Value from globalSettings
+  tokensLimitPerDay: 6000   # Value from globalSettings
+
+clients:
+  - id: "1"
+    name: "buyer-app"
+    description: "Client for the buyer application"
+    models:
+      - id: "modelA"
+        tokensLimitPerMinute: 80
+        tokensLimitPerDay: 4800
+        fallback: "modelB"
+      - id: "modelB"
+        tokensLimitPerMinute: 50
+        tokensLimitPerDay: 3000
+        fallback: "modelC"
+      - id: "modelC"
+        tokensLimitPerMinute: 30
+        tokensLimitPerDay: 1800
+    rateLimits:
+      apiLimitPerMinute: 60
+      tokensLimitPerMinute: 100
+      tokensLimitPerDay: 6000
