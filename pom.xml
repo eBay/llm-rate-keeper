@@ -189,5 +189,19 @@
     <git-code-format-maven-plugin.version>5.1</git-code-format-maven-plugin.version>
   </properties>
 
+  <developers>
+    <developer>
+      <name>Prabakaran Karuppaiah</name>
+      <organization>ebay</organization>
+      <organizationUrl>http://www.ebay.com</organizationUrl>
+    </developer>
+    <developer>
+      <name>Ramesh Periyathambi</name>
+      <organization>ebay</organization>
+      <organizationUrl>http://www.ebay.com</organizationUrl>
+    </developer>
+  </developers>
+
+
   <version>1.0.0-SNAPSHOT</version>
 </project>
