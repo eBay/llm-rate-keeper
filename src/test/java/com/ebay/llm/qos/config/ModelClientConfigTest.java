@@ -72,6 +72,10 @@ public class ModelClientConfigTest {
     });
   }
 
+  @Test
+  void shouldThrowExceptionWhenClientIdIsNull() {
+    assertThrows(IllegalArgumentException.class, () -> modelClientConfig.getClientConfig(null));
+  }
 
   @Test
   void shouldLoadCorrectClients() {

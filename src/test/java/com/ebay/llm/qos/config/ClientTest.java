@@ -40,4 +40,25 @@ public class ClientTest {
   void shouldThrowExceptionWhenModelIdDoesNotExist() {
     assertThrows(IllegalArgumentException.class, () -> client.getModelConfig("nonexistentModelId"));
   }
+
+
+  @Test
+  void shouldReturnCorrectId() {
+    assertEquals("1", client.getId());
+  }
+
+  @Test
+  void shouldReturnCorrectName() {
+    assertEquals("buyer-app", client.getName());
+  }
+
+  @Test
+  void shouldReturnCorrectDescription() {
+    assertEquals("Client for the buyer application", client.getDescription());
+  }
+
+  @Test
+  void shouldThrowExceptionWhenModelIdIsNull() {
+    assertThrows(IllegalArgumentException.class, () -> client.getModelConfig(null));
+  }
 }

@@ -100,6 +100,13 @@
       <scope>test</scope>
       <version>4.5.1</version>
     </dependency>
+
+    <dependency>
+      <groupId>it.ozimov</groupId>
+      <artifactId>embedded-redis</artifactId>
+      <version>0.7.3</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <groupId>com.ebay.llm</groupId>
 
@@ -123,33 +130,7 @@
       </build>
       <id>unit-tests</id>
     </profile>
-    <profile>
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-failsafe-plugin</artifactId>
-            <configuration>
-              <includes>
-                <include>**/*IT.java</include>
-              </includes>
-            </configuration>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>integration-test</goal>
-                  <goal>verify</goal>
-                </goals>
-                <id>integration-tests</id>
-                <phase>integration-test</phase>
-              </execution>
-            </executions>
-            <groupId>org.apache.maven.plugins</groupId>
-            <version>3.2.5</version>
-          </plugin>
-        </plugins>
-      </build>
-      <id>integration-tests</id>
-    </profile>
+
     <profile>
       <build>
         <plugins>

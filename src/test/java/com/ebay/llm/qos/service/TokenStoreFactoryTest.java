@@ -19,7 +19,7 @@ public class TokenStoreFactoryTest {
     Mockito.when(redisClient.connect()).thenReturn(statefulRedisConnection);
     TokenStore tokenStore = TokenStoreFactory.createTokenStore(TokenStoreEnum.REDIS, redisClient,
         true);
-    Assertions.assertTrue(tokenStore instanceof RedisTokenStore);
+    Assertions.assertInstanceOf(RedisTokenStore.class, tokenStore);
   }
 
   @Test
@@ -29,7 +29,7 @@ public class TokenStoreFactoryTest {
     Mockito.when(redisClient.connect()).thenReturn(statefulRedisConnection);
     TokenStore tokenStore = TokenStoreFactory.createTokenStore(TokenStoreEnum.NUKV, redisClient,
         true);
-    Assertions.assertTrue(tokenStore instanceof NUKVTokenStore);
+    Assertions.assertInstanceOf(NUKVTokenStore.class, tokenStore);
   }
 
   @Test
@@ -45,8 +45,9 @@ public class TokenStoreFactoryTest {
     RedisClient redisClient = Mockito.mock(RedisClient.class);
     StatefulRedisConnection statefulRedisConnection = Mockito.mock(StatefulRedisConnection.class);
     Mockito.when(redisClient.connect()).thenReturn(statefulRedisConnection);
-    TokenStore tokenStore = TokenStoreFactory.createTokenStore(TokenStoreEnum.REDIS, redisClient, true);
-    Assertions.assertTrue(tokenStore instanceof RedisTokenStore);
+    TokenStore tokenStore = TokenStoreFactory.createTokenStore(TokenStoreEnum.REDIS, redisClient,
+        true);
+    Assertions.assertInstanceOf(RedisTokenStore.class, tokenStore);
   }
 
   @Test
@@ -54,8 +55,9 @@ public class TokenStoreFactoryTest {
     RedisClient redisClient = Mockito.mock(RedisClient.class);
     StatefulRedisConnection statefulRedisConnection = Mockito.mock(StatefulRedisConnection.class);
     Mockito.when(redisClient.connect()).thenReturn(statefulRedisConnection);
-    TokenStore tokenStore = TokenStoreFactory.createTokenStore(TokenStoreEnum.REDIS, redisClient, false);
-    Assertions.assertTrue(tokenStore instanceof RedisTokenStore);
+    TokenStore tokenStore = TokenStoreFactory.createTokenStore(TokenStoreEnum.REDIS, redisClient,
+        false);
+    Assertions.assertInstanceOf(RedisTokenStore.class, tokenStore);
   }
 
   @Test
@@ -63,8 +65,9 @@ public class TokenStoreFactoryTest {
     RedisClient redisClient = Mockito.mock(RedisClient.class);
     StatefulRedisConnection statefulRedisConnection = Mockito.mock(StatefulRedisConnection.class);
     Mockito.when(redisClient.connect()).thenReturn(statefulRedisConnection);
-    TokenStore tokenStore = TokenStoreFactory.createTokenStore(TokenStoreEnum.NUKV, redisClient, true);
-    Assertions.assertTrue(tokenStore instanceof NUKVTokenStore);
+    TokenStore tokenStore = TokenStoreFactory.createTokenStore(TokenStoreEnum.NUKV, redisClient,
+        true);
+    Assertions.assertInstanceOf(NUKVTokenStore.class, tokenStore);
   }
 
   @Test
@@ -72,7 +75,8 @@ public class TokenStoreFactoryTest {
     RedisClient redisClient = Mockito.mock(RedisClient.class);
     StatefulRedisConnection statefulRedisConnection = Mockito.mock(StatefulRedisConnection.class);
     Mockito.when(redisClient.connect()).thenReturn(statefulRedisConnection);
-    TokenStore tokenStore = TokenStoreFactory.createTokenStore(TokenStoreEnum.NUKV, redisClient, false);
-    Assertions.assertTrue(tokenStore instanceof NUKVTokenStore);
+    TokenStore tokenStore = TokenStoreFactory.createTokenStore(TokenStoreEnum.NUKV, redisClient,
+        false);
+    Assertions.assertInstanceOf(NUKVTokenStore.class, tokenStore);
   }
 }

@@ -12,8 +12,8 @@ import java.io.IOException;
 
 public class RateLimiter {
 
-  private TokenStore tokenStore;
-  private ModelClientConfig config;
+  private final TokenStore tokenStore;
+  private final ModelClientConfig config;
 
   public RateLimiter(TokenStoreEnum tokenStoreEnum, RedisClient redisClient, boolean isAsync)
       throws IOException {

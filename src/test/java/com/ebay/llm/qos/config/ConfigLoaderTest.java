@@ -14,9 +14,10 @@ public class ConfigLoaderTest {
   @TempDir
   Path tempDir;
 
+  private final ConfigLoader configLoader = new ConfigLoader();
+
   @Test
   void shouldLoadValidConfig() throws IOException {
-    ConfigLoader configLoader = new ConfigLoader();
     ModelClientConfig config = configLoader.loadConfig(
         "model-client-config.yml");
     assertEquals(6000, config.getGlobalSettings().getTokensLimitPerDay());
@@ -24,7 +25,6 @@ public class ConfigLoaderTest {
 
   @Test
   void shouldThrowExceptionWhenFileDoesNotExist() {
-    ConfigLoader configLoader = new ConfigLoader();
     assertThrows(IOException.class, () -> configLoader.loadConfig("nonexistentFile.yaml"));
   }
 
@@ -32,7 +32,11 @@ public class ConfigLoaderTest {
   void shouldThrowExceptionWhenConfigIsNull() throws IOException {
     String fileName = tempDir.resolve("nullConfig.yaml").toString();
     Files.createFile(Path.of(fileName));
-    ConfigLoader configLoader = new ConfigLoader();
     assertThrows(IOException.class, () -> configLoader.loadConfig(fileName));
+  }
+
+  @Test
+  void shouldThrowExceptionWhenFileNameIsEmpty() {
+    assertThrows(IllegalArgumentException.class, () -> configLoader.loadConfig(""));
   }
 }
