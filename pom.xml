@@ -2,66 +2,34 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <groupId>com.ebay.llm</groupId>
   <artifactId>llm-token-ratelimiter</artifactId>
+  <modelVersion>4.0.0</modelVersion>
+  <version>1.0.0-SNAPSHOT</version>
 
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <includes>
-            <include>**/*Test.java</include>
-          </includes>
-        </configuration>
-        <groupId>org.apache.maven.plugins</groupId>
-        <version>3.2.5</version>
-      </plugin>
-      <plugin>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>prepare-agent</goal>
-            </goals>
-            <id>prepare-agent</id>
-          </execution>
-          <!-- This execution creates the code coverage report -->
-          <execution>
-            <goals>
-              <goal>report</goal>
-            </goals>
-            <id>report</id>
-            <phase>test</phase>
-          </execution>
-          <!-- This execution ensures that the code coverage metrics are met -->
-          <execution>
-            <configuration>
-              <rules>
-                <rule>
-                  <element>PACKAGE</element>
-                  <limits>
-                    <limit>
-                      <counter>LINE</counter>
-                      <minimum>0.85</minimum>
-                      <value>COVEREDRATIO</value>
-                    </limit>
-                  </limits>
-                </rule>
-              </rules>
-            </configuration>
-            <goals>
-              <goal>check</goal>
-            </goals>
-            <id>check</id>
-          </execution>
-        </executions>
-        <groupId>org.jacoco</groupId>
-        <version>0.8.11</version>
-      </plugin>
-    </plugins>
-  </build>
+  <properties>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <git-code-format-maven-plugin.version>5.1</git-code-format-maven-plugin.version>
+  </properties>
+
+  <developers>
+    <developer>
+      <name>Ramesh Periyathambi</name>
+      <organization>ebay</organization>
+      <email>rperiyathambi@ebay.com</email>
+      <organizationUrl>http://www.ebay.com</organizationUrl>
+    </developer>
+    <developer>
+      <name>Prabakaran Karuppaiah</name>
+      <organization>ebay</organization>
+      <email>pkaruppaiah@ebay.com</email>
+      <organizationUrl>http://www.ebay.com</organizationUrl>
+    </developer>
+  </developers>
+
   <dependencies>
-
     <dependency>
       <artifactId>lombok</artifactId>
       <groupId>org.projectlombok</groupId>
@@ -108,111 +76,136 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  <groupId>com.ebay.llm</groupId>
 
   <distributionManagement>
     <repository>
       <id>raptor.releases</id>
-      <url>http://ebaycentral.qa.ebay.com/content/repositories/releases/</url>
+      <url>https://ebaycentral.qa.ebay.com/content/repositories/releases/</url>
     </repository>
     <snapshotRepository>
       <id>raptor.snapshots</id>
-      <url>http://ebaycentral.qa.ebay.com/content/repositories/snapshots/</url>
+      <url>https://ebaycentral.qa.ebay.com/content/repositories/snapshots/</url>
     </snapshotRepository>
   </distributionManagement>
 
 
-  <profiles>
-    <profile>
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <configuration>
-              <includes>
-                <include>**/*Test.java</include>
-              </includes>
-            </configuration>
-            <groupId>org.apache.maven.plugins</groupId>
-            <version>3.2.5</version>
-          </plugin>
-          <plugin>
-            <groupId>com.cosium.code</groupId>
-            <artifactId>git-code-format-maven-plugin</artifactId>
-            <version>${git-code-format-maven-plugin.version}</version>
-            <executions>
-              <!-- On commit, format the modified files -->
-              <execution>
-                <id>install-formatter-hook</id>
-                <goals>
-                  <goal>install-hooks</goal>
-                </goals>
-              </execution>
-              <!-- During the build, format all files -->
-              <execution>
-                <id>format-code</id>
-                <phase>process-sources</phase>
-                <goals>
-                  <goal>format-code</goal>
-                </goals>
-              </execution>
-              <!-- On Maven verify phase, fail if any file (including unmodified) is badly formatted -->
-              <execution>
-                <id>validate-code-format</id>
-                <goals>
-                  <goal>validate-code-format</goal>
-                </goals>
-              </execution>
-            </executions>
-            <dependencies>
-              <!-- Enable https://github.com/google/google-java-format -->
-              <dependency>
-                <groupId>com.cosium.code</groupId>
-                <artifactId>google-java-format</artifactId>
-                <version>${git-code-format-maven-plugin.version}</version>
-              </dependency>
-            </dependencies>
-
-          </plugin>
-        </plugins>
-      </build>
-      <id>unit-tests</id>
-    </profile>
-
-    <profile>
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-deploy-plugin</artifactId>
-            <groupId>org.apache.maven.plugins</groupId>
-            <version>3.1.1</version>
-          </plugin>
-        </plugins>
-      </build>
-      <id>package-deploy</id>
-    </profile>
-  </profiles>
-
-  <properties>
-    <maven.compiler.source>17</maven.compiler.source>
-    <maven.compiler.target>17</maven.compiler.target>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <git-code-format-maven-plugin.version>5.1</git-code-format-maven-plugin.version>
-  </properties>
-
-  <developers>
-    <developer>
-      <name>Prabakaran Karuppaiah</name>
-      <organization>ebay</organization>
-      <organizationUrl>http://www.ebay.com</organizationUrl>
-    </developer>
-    <developer>
-      <name>Ramesh Periyathambi</name>
-      <organization>ebay</organization>
-      <organizationUrl>http://www.ebay.com</organizationUrl>
-    </developer>
-  </developers>
-
-  <modelVersion>4.0.0</modelVersion>
-  <version>1.0.0-SNAPSHOT</version>
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <configuration>
+            <includes>
+              <include>**/*Test.java</include>
+            </includes>
+          </configuration>
+          <groupId>org.apache.maven.plugins</groupId>
+          <version>3.2.5</version>
+        </plugin>
+        <plugin>
+          <groupId>com.cosium.code</groupId>
+          <artifactId>git-code-format-maven-plugin</artifactId>
+          <version>${git-code-format-maven-plugin.version}</version>
+          <executions>
+            <!-- On commit, format the modified files -->
+            <execution>
+              <id>install-formatter-hook</id>
+              <goals>
+                <goal>install-hooks</goal>
+              </goals>
+            </execution>
+            <!-- During the build, format all files -->
+            <execution>
+              <id>format-code</id>
+              <phase>process-sources</phase>
+              <goals>
+                <goal>format-code</goal>
+              </goals>
+            </execution>
+            <!-- On Maven verify phase, fail if any file (including unmodified) is badly formatted -->
+            <execution>
+              <id>validate-code-format</id>
+              <goals>
+                <goal>validate-code-format</goal>
+              </goals>
+            </execution>
+          </executions>
+          <dependencies>
+            <!-- Enable https://github.com/google/google-java-format -->
+            <dependency>
+              <groupId>com.cosium.code</groupId>
+              <artifactId>google-java-format</artifactId>
+              <version>${git-code-format-maven-plugin.version}</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <configuration>
+            <includes>
+              <include>**/*Test.java</include>
+            </includes>
+          </configuration>
+          <groupId>org.apache.maven.plugins</groupId>
+          <version>3.2.5</version>
+        </plugin>
+        <plugin>
+          <artifactId>jacoco-maven-plugin</artifactId>
+          <executions>
+            <execution>
+              <goals>
+                <goal>prepare-agent</goal>
+              </goals>
+              <id>prepare-agent</id>
+            </execution>
+            <!-- This execution creates the code coverage report -->
+            <execution>
+              <goals>
+                <goal>report</goal>
+              </goals>
+              <id>report</id>
+              <phase>test</phase>
+            </execution>
+            <!-- This execution ensures that the code coverage metrics are met -->
+            <execution>
+              <configuration>
+                <rules>
+                  <rule>
+                    <element>PACKAGE</element>
+                    <limits>
+                      <limit>
+                        <counter>LINE</counter>
+                        <minimum>0.85</minimum>
+                        <value>COVEREDRATIO</value>
+                      </limit>
+                    </limits>
+                  </rule>
+                </rules>
+              </configuration>
+              <goals>
+                <goal>check</goal>
+              </goals>
+              <id>check</id>
+            </execution>
+          </executions>
+          <groupId>org.jacoco</groupId>
+          <version>0.8.11</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-shade-plugin</artifactId>
+          <version>3.1.1</version>
+          <executions>
+            <!-- Run shade goal on package phase -->
+            <execution>
+              <phase>package</phase>
+              <goals>
+                <goal>shade</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
 </project>
