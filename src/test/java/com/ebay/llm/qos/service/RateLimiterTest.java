@@ -10,7 +10,6 @@ import com.ebay.llm.qos.config.Client;
 import com.ebay.llm.qos.config.ClientModel;
 import com.ebay.llm.qos.config.ConfigLoader;
 import com.ebay.llm.qos.config.ModelClientConfig;
-import com.ebay.llm.qos.constant.TokenStoreEnum;
 import com.ebay.llm.qos.store.TokenStore;
 import com.ebay.llm.qos.store.redis.RedisTokenStore;
 import io.lettuce.core.RedisClient;
@@ -56,7 +55,8 @@ class RateLimiterTest {
     when(client.getModelConfig(anyString())).thenReturn(clientModel);
     when(clientModel.getTokensLimitPerMinute()).thenReturn(100L);
     when(clientModel.getTokensLimitPerDay()).thenReturn(1000L);
-    rateLimiter = new RateLimiter(TokenStoreEnum.REDIS, redisClient, false);
+    TokenStore tokenStore = new RedisTokenStore(redisClient, false);
+    rateLimiter = new RateLimiter(tokenStore);
   }
 
   @AfterEach
