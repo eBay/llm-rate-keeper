@@ -4,10 +4,7 @@ import com.ebay.llm.qos.config.Client;
 import com.ebay.llm.qos.config.ClientModel;
 import com.ebay.llm.qos.config.ConfigLoader;
 import com.ebay.llm.qos.config.ModelClientConfig;
-import com.ebay.llm.qos.constant.TokenStoreEnum;
 import com.ebay.llm.qos.store.TokenStore;
-import com.ebay.llm.qos.store.exception.TokenStoreException;
-import io.lettuce.core.RedisClient;
 import java.io.IOException;
 
 public class RateLimiter {
@@ -15,12 +12,9 @@ public class RateLimiter {
   private final TokenStore tokenStore;
   private final ModelClientConfig config;
 
-  public RateLimiter(TokenStoreEnum tokenStoreEnum, RedisClient redisClient, boolean isAsync)
+  public RateLimiter(TokenStore tokenStore)
       throws IOException {
-    if (redisClient == null) {
-      throw new TokenStoreException("Failed to establish a connection with Redis");
-    }
-    this.tokenStore = TokenStoreFactory.createTokenStore(tokenStoreEnum, redisClient, isAsync);
+    this.tokenStore = tokenStore;
     this.config = new ConfigLoader().loadConfig("model-client-config.yml");
   }
 
