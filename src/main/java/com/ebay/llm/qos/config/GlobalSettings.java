@@ -9,4 +9,6 @@ public class GlobalSettings {
   private Long tokensLimitPerMinute;
   private Long tokensLimitPerDay;
   private Long coolingPeriodSeconds;
+  private String nuKVHost;
+
 }

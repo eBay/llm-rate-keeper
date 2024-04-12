@@ -1,4 +1,5 @@
 globalSettings:
+  nuKVHost: "hubgptgatewaytokencountnukvhost"
   apiCallsLimitPerMinute: 60
   tokensLimitPerMinute: 100
   tokensLimitPerDay: 6000
