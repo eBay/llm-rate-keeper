@@ -19,7 +19,8 @@ public class RateLimiter {
   }
 
   public boolean isAllowed(String modelId, String clientId, int tokensRequired) {
-    return tokenStore.hasTokens(clientId, modelId, tokensRequired, tokensRequired);
+    Pair<Long, Long> tokenLimits = getTokenLimits(clientId, modelId);
+    return tokenStore.hasTokens(clientId, modelId, tokenLimits.getFirst(), tokenLimits.getSecond());
   }
 
   public void updateTokenUsage(String modelId, String clientId, long contextTokensUsed,
