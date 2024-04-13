@@ -24,7 +24,7 @@ public class ModelClientConfigTest {
     ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
     try {
       modelClientConfig = mapper.readValue(
-          Path.of("src/main/resources/model-client-config.yml").toFile(), ModelClientConfig.class);
+          Path.of("src/test/resources/model-client-config.yml").toFile(), ModelClientConfig.class);
     } catch (Exception e) {
       e.printStackTrace();
     }
