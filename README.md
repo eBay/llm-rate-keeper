@@ -1,4 +1,3 @@
-```markdown
 # Token Limiter Usage Guide
 
 This guide provides instructions on how to use the token limiter in your Java applications. Follow the steps below to integrate the token rate limiter using Maven, configure your models and clients, and utilize the provided methods in your code.
@@ -110,4 +109,3 @@ tokenRateLimiter.resetModelCoolingPeriod(String modelId);
 ```
 
 By following these steps, you can effectively integrate and manage token rate limiting in your applications using the Redis based token limiter.
-```
