@@ -3,9 +3,9 @@
 https://ci-lvsaz02.cloud.ebay.com/databtch-8405/job/llm-token-ratelimiter/
 
 ```markdown
-# Redis Based Token Limiter Usage Guide
+# Token Limiter Usage Guide
 
-This guide provides instructions on how to use the Redis based token limiter in your Java applications. Follow the steps below to integrate the token rate limiter using Maven, configure your models and clients, and utilize the provided methods in your code.
+This guide provides instructions on how to use the token limiter in your Java applications. Follow the steps below to integrate the token rate limiter using Maven, configure your models and clients, and utilize the provided methods in your code.
 
 ## Step 1: Add Maven Dependency
 
@@ -14,7 +14,7 @@ Include the following dependency in your project's `pom.xml` file to use the Red
 ```xml
 <dependency>
     <groupId>com.ebay.llm</groupId>
-    <artifactId>Redis-llm-token-ratelimiter</artifactId>
+    <artifactId>llm-token-ratelimiter</artifactId>
     <version>1.0.0</version>
 </dependency>
 ```
@@ -25,7 +25,7 @@ Create a `model-client-config.yml` file under the `src/main/resources` directory
 
 ```yaml
 globalSettings:
-  RedisHost: "hubgptgatewaytokencountRedishost"
+  redisKVStore: "ChatAppTokenCountKVStore"
   apiCallsLimitPerMinute: 60
   tokensLimitPerMinute: 100
   tokensLimitPerDay: 6000
@@ -58,7 +58,7 @@ clients:
 
 ## Step 3: Store Configuration in Redis
 
-To store the configuration in Redis, create a Redis keyspace and set the `RedisHost` as shown in the configuration file.
+To store the configuration in Redis, create a Redis Key Value store and set the `redisKVStore` as shown in the configuration file.
 
 ## Step 4: Use Token Limiter in Code
 
@@ -66,9 +66,9 @@ Inject the `TokenStore` and create an instance of `TokenRateLimiter` in your cod
 
 ```java
 @Inject
-private TokenStore RedisTokenStore;
+private TokenStore redisTokenStore;
 
-TokenRateLimiter tokenRateLimiter = new TokenRateLimiter(RedisTokenStore);
+TokenRateLimiter tokenRateLimiter = new TokenRateLimiter(redisTokenStore);
 ```
 
 Now you can start using the methods provided by the `TokenRateLimiter`.
