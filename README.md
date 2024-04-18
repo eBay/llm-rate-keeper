@@ -51,18 +51,16 @@ clients:
       # Add additional clients and models as needed
 ```
 
-## Step 3: Store Configuration in Redis
-
-To store the configuration in Redis, create a Redis Key Value store and set the `redisKVStore` as shown in the configuration file.
-
-## Step 4: Use Token Limiter in Code
+## Step 3: Use Token Limiter in Code
 
 Inject the `TokenStore` and create an instance of `TokenRateLimiter` in your code as follows:
 
 ```java
-@Inject
-private TokenStore redisTokenStore;
 
+private TokenStore redisTokenStore;
+private RedisClient redisClient;
+redisClient = RedisClient.create("redis://localhost:6379");
+redisTokenStore = new RedisTokenStore(redisClient);
 TokenRateLimiter tokenRateLimiter = new TokenRateLimiter(redisTokenStore);
 ```
 
