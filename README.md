@@ -9,8 +9,8 @@ Include the following dependency in your project's `pom.xml` file to use the Red
 ```xml
 <dependency>
     <groupId>com.ebay.llm</groupId>
-    <artifactId>llm-token-ratelimiter</artifactId>
-    <version>1.0.1</version>
+    <artifactId>quality-of-service-llm-router</artifactId>
+    <version>1.0.2</version>
 </dependency>
 ```
 
