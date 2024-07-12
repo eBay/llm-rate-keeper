@@ -140,16 +140,6 @@
           </dependencies>
         </plugin>
         <plugin>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <configuration>
-            <includes>
-              <include>**/*Test.java</include>
-            </includes>
-          </configuration>
-          <groupId>org.apache.maven.plugins</groupId>
-          <version>3.2.5</version>
-        </plugin>
-        <plugin>
           <artifactId>jacoco-maven-plugin</artifactId>
           <executions>
             <execution>
