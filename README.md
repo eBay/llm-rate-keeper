@@ -1,6 +1,6 @@
-# Token Limiter Usage Guide
+# LLMRateKeeper Usage Guide
 
-This guide provides instructions on how to use the token limiter in your Java applications. Follow the steps below to integrate the token rate limiter using Maven, configure your models and clients, and utilize the provided methods in your code.
+This guide provides instructions on how to use the LLMRateKeeper in your Java applications. Follow the steps below to integrate the LLMRateKeeper using Maven, configure your models and clients, and utilize the provided methods in your code.
 
 ## Step 1: Add Maven Dependency
 
@@ -9,7 +9,7 @@ Include the following dependency in your project's `pom.xml` file to use the Red
 ```xml
 <dependency>
     <groupId>com.ebay.llm</groupId>
-    <artifactId>quality-of-service-llm-router</artifactId>
+    <artifactId>llm-rate-keeper</artifactId>
     <version>1.0.2</version>
 </dependency>
 ```
@@ -51,7 +51,7 @@ clients:
       # Add additional clients and models as needed
 ```
 
-## Step 3: Use Token Limiter in Code
+## Step 3: Use LLMRateKeeper in Code
 
 Inject the `TokenStore` and create an instance of `TokenRateLimiter` in your code as follows:
 
