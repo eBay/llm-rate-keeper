@@ -125,7 +125,10 @@ tokenRateLimiter.resetModelCoolingPeriod(String modelId);
 
 By following these steps, you can effectively integrate and manage token rate limiting in your applications using the Redis based token limiter.
 
-License Information
+## Contributing to This Project
+We welcome contributions. If you find any bugs, potential flaws and edge cases, improvements, new feature suggestions or discussions, please submit issues or pull requests.
+
+## License Information
 Copyright 2023-2024 eBay Inc.
 
 Authors/Developers: Praba Karuppaiah, Ramesh Periyathambi
