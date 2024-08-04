@@ -128,6 +128,10 @@ By following these steps, you can effectively integrate and manage token rate li
 ## Contributing to This Project
 We welcome contributions. If you find any bugs, potential flaws and edge cases, improvements, new feature suggestions or discussions, please submit issues or pull requests.
 
+# Contact
+- Praba Karuppaiah (pkaruppaiah@ebay.com)
+- Ramesh Periyathambi (rperiyathambi@ebay.com)
+
 ## License Information
 Copyright 2023-2024 eBay Inc.
 
