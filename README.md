@@ -1,4 +1,21 @@
-# LLMRateKeeper Usage Guide
+# LLMRateKeeper 
+LLMRateKeeper is a Java library designed to integrate token rate limiting into applications using Generative AI models to maintain Quality of Service (QoS). It leverages Redis as a backend for token storage and provides a configurable system to manage API and token usage limits for different models and clients.
+
+**Summary of Configuration Settings:**
+
+**Global Settings:** Defines the Redis key-value store name, global API call limits per minute, token limits per minute and per day, as well as a standard cooling period duration in seconds after which rate-limited clients or models can resume normal operations.
+
+**Models Configuration:** Allows for the definition of various models, each with its own description, API call limits, token limits per request, per minute, and a specific cooling period. These models are tailored to cater to different types of clients, such as premium clients that may require higher capacities.
+
+**Default Client Token Limits:** Sets default token limits for clients based on the global settings, with a specified number of tokens allowed per minute and per day.
+
+**Clients Configuration:** Specifies individual clients by ID, name, and description, and assigns them to models. Each client-model pairing can have customized token limits per minute and per day. Clients can also have a fallback model to use if necessary.
+
+To use LLMRateKeeper, developers need to add the Maven dependency to their project, create a model-client-config.yml configuration file, and utilize the provided TokenRateLimiter methods in their code to update token usage, check token limits, update and reset model cooling periods, and determine if a model is ready to serve requests.
+
+Overall, LLMRateKeeper provides a structured and manageable way to enforce rate limiting, ensuring that clients adhere to specified usage limits and that services maintain optimal performance levels without being overwhelmed by excessive requests.
+
+## Usage Guide
 
 This guide provides instructions on how to use the LLMRateKeeper in your Java applications. Follow the steps below to integrate the LLMRateKeeper using Maven, configure your models and clients, and utilize the provided methods in your code.
 
