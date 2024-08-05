@@ -3,9 +3,9 @@
   xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <groupId>com.ebay.llm</groupId>
-  <artifactId>quality-of-service-llm-router</artifactId>
+  <artifactId>llm-rate-keeper</artifactId>
   <modelVersion>4.0.0</modelVersion>
-  <version>1.0.2</version>
+  <version>1.0.0</version>
 
   <properties>
     <maven.compiler.source>17</maven.compiler.source>

@@ -27,7 +27,7 @@ Include the following dependency in your project's `pom.xml` file to use the Red
 <dependency>
     <groupId>com.ebay.llm</groupId>
     <artifactId>llm-rate-keeper</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
