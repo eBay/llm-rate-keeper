@@ -1,4 +1,4 @@
-package com.ebay.llm.qos.store;
+package com.ebay.llm.qos.model;
 
 import java.time.Instant;
 import lombok.AllArgsConstructor;
