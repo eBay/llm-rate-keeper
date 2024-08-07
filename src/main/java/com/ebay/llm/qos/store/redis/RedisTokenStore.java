@@ -1,5 +1,6 @@
 package com.ebay.llm.qos.store.redis;
 
+import com.ebay.llm.qos.model.ConsumedTokens;
 import com.ebay.llm.qos.store.KeyGenerator;
 import com.ebay.llm.qos.store.TokenCount;
 import com.ebay.llm.qos.store.TokenCountManager;
@@ -55,10 +56,10 @@ public class RedisTokenStore implements TokenStore {
   }
 
   @Override
-  public void consumeTokens(String clientId, String modelId, long tokens, long tokensPerMinuteLimit,
+  public ConsumedTokens consumeTokens(String clientId, String modelId, long tokens, long tokensPerMinuteLimit,
       long tokensPerDayLimit) {
     try {
-      consume(clientId, modelId, tokens, tokensPerMinuteLimit, tokensPerDayLimit);
+      return consume(clientId, modelId, tokens, tokensPerMinuteLimit, tokensPerDayLimit);
     } catch (Exception e) {
       throw new TokenStoreException(
           "Error consuming tokens for client " + clientId + " and model " + modelId, e);
@@ -118,7 +119,7 @@ public class RedisTokenStore implements TokenStore {
         && tokenCountManager.sumTokens(dayCounts) <= tokensPerDayLimit;
   }
 
-  private void consume(String clientId, String modelId, long tokens, long tokensPerMinuteLimit,
+  private ConsumedTokens consume(String clientId, String modelId, long tokens, long tokensPerMinuteLimit,
       long tokensPerDayLimit) throws ExecutionException, InterruptedException {
     String minuteKey = keyGenerator.generateKey(clientId, modelId, "minute");
     String dayKey = keyGenerator.generateKey(clientId, modelId, "day");
@@ -135,6 +136,10 @@ public class RedisTokenStore implements TokenStore {
 
     updateTokenCounts(minuteKey, minuteCounts);
     updateTokenCounts(dayKey, dayCounts);
+    ConsumedTokens consumedTokens = new ConsumedTokens();
+    consumedTokens.setPerDayTokens(tokenCountManager.sumTokens(getTokenCounts(minuteKey)));
+    consumedTokens.setPerDayTokens(tokenCountManager.sumTokens(getTokenCounts(dayKey)));
+   return consumedTokens;
   }
 
   private Deque<TokenCount> getTokenCounts(String key) {

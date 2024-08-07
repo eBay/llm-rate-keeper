@@ -4,6 +4,7 @@ import com.ebay.llm.qos.config.Client;
 import com.ebay.llm.qos.config.ClientModel;
 import com.ebay.llm.qos.config.ConfigLoader;
 import com.ebay.llm.qos.config.ModelClientConfig;
+import com.ebay.llm.qos.model.ConsumedTokens;
 import com.ebay.llm.qos.store.TokenStore;
 import java.io.IOException;
 
@@ -24,12 +25,12 @@ public class RateLimiter {
     return tokenStore.hasTokens(clientId, modelId, tokenLimits.getFirst(), tokenLimits.getSecond());
   }
 
-  public void updateTokenUsage(String modelId, String clientId, long contextTokensUsed,
+  public ConsumedTokens updateTokenUsage(String modelId, String clientId, long contextTokensUsed,
       long completeTokensUsed) {
     long usedTokenCount = contextTokensUsed + completeTokensUsed;
     Pair<Long, Long> tokenLimits = getTokenLimits(clientId, modelId);
 
-    tokenStore.consumeTokens(clientId, modelId, usedTokenCount, tokenLimits.getFirst(),
+    return tokenStore.consumeTokens(clientId, modelId, usedTokenCount, tokenLimits.getFirst(),
         tokenLimits.getSecond());
   }
 

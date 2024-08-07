@@ -1,5 +1,6 @@
 package com.ebay.llm.qos.store.nukv;
 
+import com.ebay.llm.qos.model.ConsumedTokens;
 import com.ebay.llm.qos.store.TokenStore;
 import com.ebay.llm.qos.store.exception.TokenStoreException;
 
@@ -12,7 +13,7 @@ public class NUKVTokenStore implements TokenStore {
   }
 
   @Override
-  public void consumeTokens(String clientId, String modelId, long tokens, long tokensPerMinuteLimit,
+  public ConsumedTokens consumeTokens(String clientId, String modelId, long tokens, long tokensPerMinuteLimit,
       long tokensPerDayLimit) throws TokenStoreException {
     throw new UnsupportedOperationException("Operation not supported");
   }
