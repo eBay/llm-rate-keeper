@@ -1,14 +1,13 @@
 package com.ebay.llm.qos.store;
 
-import com.ebay.llm.qos.model.TokenCount;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.ebay.llm.qos.model.TokenCount;
 import java.time.Instant;
 import java.util.Deque;
 import java.util.LinkedList;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
 
 public class TokenCountManagerTest {
 

@@ -8,7 +8,8 @@ public interface TokenStore {
   boolean hasTokens(String clientId, String modelId, long tokensPerMinuteLimit,
       long tokensPerDayLimit) throws TokenStoreException;
 
-  ConsumedTokens consumeTokens(String clientId, String modelId, long tokens, long tokensPerMinuteLimit,
+  ConsumedTokens consumeTokens(String clientId, String modelId, long tokens,
+      long tokensPerMinuteLimit,
       long tokensPerDayLimit) throws TokenStoreException;
 
   void setCoolingPeriod(String modelId, int durationInMilliSeconds) throws TokenStoreException;

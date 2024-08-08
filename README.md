@@ -1,27 +1,47 @@
-# LLMRateKeeper 
-LLMRateKeeper is a Java library designed to integrate token rate limiting into applications using Generative AI models to maintain Quality of Service (QoS). It leverages Redis as a backend for token storage and provides a configurable system to manage API and token usage limits for different models and clients.
+# LLMRateKeeper
+
+LLMRateKeeper is a Java library designed to integrate token rate limiting into applications using
+Generative AI models to maintain Quality of Service (QoS). It leverages Redis as a backend for token
+storage and provides a configurable system to manage API and token usage limits for different models
+and clients.
 
 **Summary of Configuration Settings:**
 
-**Global Settings:** Defines the Redis key-value store name, global API call limits per minute, token limits per minute and per day, as well as a standard cooling period duration in seconds after which rate-limited clients or models can resume normal operations.
+**Global Settings:** Defines the Redis key-value store name, global API call limits per minute,
+token limits per minute and per day, as well as a standard cooling period duration in seconds after
+which rate-limited clients or models can resume normal operations.
 
-**Models Configuration:** Allows for the definition of various models, each with its own description, API call limits, token limits per request, per minute, and a specific cooling period. These models are tailored to cater to different types of clients, such as premium clients that may require higher capacities.
+**Models Configuration:** Allows for the definition of various models, each with its own
+description, API call limits, token limits per request, per minute, and a specific cooling period.
+These models are tailored to cater to different types of clients, such as premium clients that may
+require higher capacities.
 
-**Default Client Token Limits:** Sets default token limits for clients based on the global settings, with a specified number of tokens allowed per minute and per day.
+**Default Client Token Limits:** Sets default token limits for clients based on the global settings,
+with a specified number of tokens allowed per minute and per day.
 
-**Clients Configuration:** Specifies individual clients by ID, name, and description, and assigns them to models. Each client-model pairing can have customized token limits per minute and per day. Clients can also have a fallback model to use if necessary.
+**Clients Configuration:** Specifies individual clients by ID, name, and description, and assigns
+them to models. Each client-model pairing can have customized token limits per minute and per day.
+Clients can also have a fallback model to use if necessary.
 
-To use LLMRateKeeper, developers need to add the Maven dependency to their project, create a model-client-config.yml configuration file, and utilize the provided TokenRateLimiter methods in their code to update token usage, check token limits, update and reset model cooling periods, and determine if a model is ready to serve requests.
+To use LLMRateKeeper, developers need to add the Maven dependency to their project, create a
+model-client-config.yml configuration file, and utilize the provided TokenRateLimiter methods in
+their code to update token usage, check token limits, update and reset model cooling periods, and
+determine if a model is ready to serve requests.
 
-Overall, LLMRateKeeper provides a structured and manageable way to enforce rate limiting, ensuring that clients adhere to specified usage limits and that services maintain optimal performance levels without being overwhelmed by excessive requests.
+Overall, LLMRateKeeper provides a structured and manageable way to enforce rate limiting, ensuring
+that clients adhere to specified usage limits and that services maintain optimal performance levels
+without being overwhelmed by excessive requests.
 
 ## Usage Guide
 
-This guide provides instructions on how to use the LLMRateKeeper in your Java applications. Follow the steps below to integrate the LLMRateKeeper using Maven, configure your models and clients, and utilize the provided methods in your code.
+This guide provides instructions on how to use the LLMRateKeeper in your Java applications. Follow
+the steps below to integrate the LLMRateKeeper using Maven, configure your models and clients, and
+utilize the provided methods in your code.
 
 ## Step 1: Add Maven Dependency
 
-Include the following dependency in your project's `pom.xml` file to use the Redis based token rate limiter:
+Include the following dependency in your project's `pom.xml` file to use the Redis based token rate
+limiter:
 
 ```xml
 <dependency>
@@ -33,7 +53,8 @@ Include the following dependency in your project's `pom.xml` file to use the Red
 
 ## Step 2: Configuration File
 
-Create a `model-client-config.yml` file under the `src/main/resources` directory. Add the configuration for your model and client as shown below:
+Create a `model-client-config.yml` file under the `src/main/resources` directory. Add the
+configuration for your model and client as shown below:
 
 ```yaml
 globalSettings:
@@ -123,22 +144,31 @@ Reset the cooling period for a model:
 tokenRateLimiter.resetModelCoolingPeriod(String modelId);
 ```
 
-By following these steps, you can effectively integrate and manage token rate limiting in your applications using the Redis based token limiter.
+By following these steps, you can effectively integrate and manage token rate limiting in your
+applications using the Redis based token limiter.
 
 ## Contributing to This Project
-We welcome contributions. If you find any bugs, potential flaws and edge cases, improvements, new feature suggestions or discussions, please submit issues or pull requests.
+
+We welcome contributions. If you find any bugs, potential flaws and edge cases, improvements, new
+feature suggestions or discussions, please submit issues or pull requests.
 
 # Contact
+
 - Praba Karuppaiah (pkaruppaiah@ebay.com)
 - Ramesh Periyathambi (rperiyathambi@ebay.com)
 
 ## License Information
+
 Copyright 2023-2024 eBay Inc.
 
 Authors/Developers: Praba Karuppaiah, Ramesh Periyathambi
 
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in
+compliance with the License. You may obtain a copy of the License at
 
 https://www.apache.org/licenses/LICENSE-2.0
 
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+Unless required by applicable law or agreed to in writing, software distributed under the License is
+distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+implied. See the License for the specific language governing permissions and limitations under the
+License.

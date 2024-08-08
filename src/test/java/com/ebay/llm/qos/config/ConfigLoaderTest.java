@@ -11,10 +11,9 @@ import org.junit.jupiter.api.io.TempDir;
 
 public class ConfigLoaderTest {
 
+  private final ConfigLoader configLoader = new ConfigLoader();
   @TempDir
   Path tempDir;
-
-  private final ConfigLoader configLoader = new ConfigLoader();
 
   @Test
   void shouldLoadValidConfig() throws IOException {

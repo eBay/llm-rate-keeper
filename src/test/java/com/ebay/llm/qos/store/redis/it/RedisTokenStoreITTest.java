@@ -1,14 +1,17 @@
 package com.ebay.llm.qos.store.redis.it;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.ebay.llm.qos.model.ConsumedTokens;
 import com.ebay.llm.qos.store.redis.RedisTokenStore;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.api.StatefulRedisConnection;
 import java.io.IOException;
-import org.junit.jupiter.api.*;
-
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import redis.embedded.RedisServer;
 
 public class RedisTokenStoreITTest {
@@ -95,7 +98,8 @@ public class RedisTokenStoreITTest {
   @Test
   public void testConsumeTokensWithAsync() {
     redisTokenStore = new RedisTokenStore(redisClient, true);
-    ConsumedTokens consumedTokens = redisTokenStore.consumeTokens("testClient", "testModel", 10, 100, 1000);
+    ConsumedTokens consumedTokens = redisTokenStore.consumeTokens("testClient", "testModel", 10,
+        100, 1000);
     assertNotNull(consumedTokens);
     assertTrue(consumedTokens.getPerMinTokens() > 0);
     assertTrue(consumedTokens.getPerDayTokens() > 0);

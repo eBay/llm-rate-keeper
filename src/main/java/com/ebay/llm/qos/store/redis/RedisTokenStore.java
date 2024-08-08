@@ -1,8 +1,8 @@
 package com.ebay.llm.qos.store.redis;
 
 import com.ebay.llm.qos.model.ConsumedTokens;
-import com.ebay.llm.qos.store.KeyGenerator;
 import com.ebay.llm.qos.model.TokenCount;
+import com.ebay.llm.qos.store.KeyGenerator;
 import com.ebay.llm.qos.store.TokenCountManager;
 import com.ebay.llm.qos.store.TokenStore;
 import com.ebay.llm.qos.store.exception.TokenStoreException;
@@ -56,7 +56,8 @@ public class RedisTokenStore implements TokenStore {
   }
 
   @Override
-  public ConsumedTokens consumeTokens(String clientId, String modelId, long tokens, long tokensPerMinuteLimit,
+  public ConsumedTokens consumeTokens(String clientId, String modelId, long tokens,
+      long tokensPerMinuteLimit,
       long tokensPerDayLimit) {
     try {
       return consume(clientId, modelId, tokens, tokensPerMinuteLimit, tokensPerDayLimit);
@@ -68,14 +69,17 @@ public class RedisTokenStore implements TokenStore {
 
   @Override
   public void setCoolingPeriod(String modelId, int durationInMilliseconds) {
-    log.info("Setting cooling period of {} milliseconds for model {}", durationInMilliseconds, modelId);
+    log.info("Setting cooling period of {} milliseconds for model {}", durationInMilliseconds,
+        modelId);
     try {
       if (isAsync) {
-        asyncCommands.setex(COOLING_KEY_PREFIX + modelId, durationInMilliseconds / 1000, TRUE_VALUE);
+        asyncCommands.setex(COOLING_KEY_PREFIX + modelId, durationInMilliseconds / 1000,
+            TRUE_VALUE);
       } else {
         syncCommands.setex(COOLING_KEY_PREFIX + modelId, durationInMilliseconds / 1000, TRUE_VALUE);
       }
-      log.info("Set cooling period of {} milliseconds for model {}", durationInMilliseconds, modelId);
+      log.info("Set cooling period of {} milliseconds for model {}", durationInMilliseconds,
+          modelId);
     } catch (Exception e) {
       throw new TokenStoreException("Error setting cooling period for model " + modelId, e);
     }
@@ -126,7 +130,8 @@ public class RedisTokenStore implements TokenStore {
         && tokenCountManager.sumTokens(dayCounts) < tokensPerDayLimit;
   }
 
-  private ConsumedTokens consume(String clientId, String modelId, long tokens, long tokensPerMinuteLimit,
+  private ConsumedTokens consume(String clientId, String modelId, long tokens,
+      long tokensPerMinuteLimit,
       long tokensPerDayLimit) throws ExecutionException, InterruptedException {
     String minuteKey = keyGenerator.generateKey(clientId, modelId, "minute");
     String dayKey = keyGenerator.generateKey(clientId, modelId, "day");
@@ -146,7 +151,7 @@ public class RedisTokenStore implements TokenStore {
     ConsumedTokens consumedTokens = new ConsumedTokens();
     consumedTokens.setPerMinTokens(tokenCountManager.sumTokens(getTokenCounts(minuteKey)));
     consumedTokens.setPerDayTokens(tokenCountManager.sumTokens(getTokenCounts(dayKey)));
-   return consumedTokens;
+    return consumedTokens;
   }
 
   private Deque<TokenCount> getTokenCounts(String key) {
