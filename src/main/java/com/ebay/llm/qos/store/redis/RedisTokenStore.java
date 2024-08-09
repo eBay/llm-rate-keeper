@@ -1,8 +1,8 @@
 package com.ebay.llm.qos.store.redis;
 
 import com.ebay.llm.qos.model.ConsumedTokens;
+import com.ebay.llm.qos.model.TokenCount;
 import com.ebay.llm.qos.store.KeyGenerator;
-import com.ebay.llm.qos.store.TokenCount;
 import com.ebay.llm.qos.store.TokenCountManager;
 import com.ebay.llm.qos.store.TokenStore;
 import com.ebay.llm.qos.store.exception.TokenStoreException;
@@ -56,7 +56,8 @@ public class RedisTokenStore implements TokenStore {
   }
 
   @Override
-  public ConsumedTokens consumeTokens(String clientId, String modelId, long tokens, long tokensPerMinuteLimit,
+  public ConsumedTokens consumeTokens(String clientId, String modelId, long tokens,
+      long tokensPerMinuteLimit,
       long tokensPerDayLimit) {
     try {
       return consume(clientId, modelId, tokens, tokensPerMinuteLimit, tokensPerDayLimit);
@@ -67,15 +68,21 @@ public class RedisTokenStore implements TokenStore {
   }
 
   @Override
-  public void setCoolingPeriod(String modelId, int durationInMilliSeconds) {
-    log.info("Setting cooling period of {} milliseconds for model {}", durationInMilliSeconds,
+  public void setCoolingPeriod(String modelId, int durationInMilliseconds) {
+    log.info("Setting cooling period of {} milliseconds for model {}", durationInMilliseconds,
         modelId);
-    if (isAsync) {
-      asyncCommands.setex(COOLING_KEY_PREFIX + modelId, durationInMilliSeconds / 1000, TRUE_VALUE);
-    } else {
-      syncCommands.setex(COOLING_KEY_PREFIX + modelId, durationInMilliSeconds / 1000, TRUE_VALUE);
+    try {
+      if (isAsync) {
+        asyncCommands.setex(COOLING_KEY_PREFIX + modelId, durationInMilliseconds / 1000,
+            TRUE_VALUE);
+      } else {
+        syncCommands.setex(COOLING_KEY_PREFIX + modelId, durationInMilliseconds / 1000, TRUE_VALUE);
+      }
+      log.info("Set cooling period of {} milliseconds for model {}", durationInMilliseconds,
+          modelId);
+    } catch (Exception e) {
+      throw new TokenStoreException("Error setting cooling period for model " + modelId, e);
     }
-    log.info("Set cooling period of {} milliseconds for model {}", durationInMilliSeconds, modelId);
   }
 
   @Override
@@ -99,12 +106,16 @@ public class RedisTokenStore implements TokenStore {
   @Override
   public void resetCoolingPeriod(String modelId) {
     log.info("Resetting cooling period for model {}", modelId);
-    if (isAsync) {
-      asyncCommands.del(COOLING_KEY_PREFIX + modelId);
-    } else {
-      syncCommands.del(COOLING_KEY_PREFIX + modelId);
+    try {
+      if (isAsync) {
+        asyncCommands.del(COOLING_KEY_PREFIX + modelId);
+      } else {
+        syncCommands.del(COOLING_KEY_PREFIX + modelId);
+      }
+      log.info("Reset cooling period for model {}", modelId);
+    } catch (Exception e) {
+      throw new TokenStoreException("Error resetting cooling period for model " + modelId, e);
     }
-    log.info("Reset cooling period for model {}", modelId);
   }
 
   private boolean checkTokens(String clientId, String modelId, long tokensPerMinuteLimit,
@@ -115,11 +126,12 @@ public class RedisTokenStore implements TokenStore {
     Deque<TokenCount> minuteCounts = getTokenCounts(minuteKey);
     Deque<TokenCount> dayCounts = getTokenCounts(dayKey);
 
-    return tokenCountManager.sumTokens(minuteCounts) <= tokensPerMinuteLimit
-        && tokenCountManager.sumTokens(dayCounts) <= tokensPerDayLimit;
+    return tokenCountManager.sumTokens(minuteCounts) < tokensPerMinuteLimit
+        && tokenCountManager.sumTokens(dayCounts) < tokensPerDayLimit;
   }
 
-  private ConsumedTokens consume(String clientId, String modelId, long tokens, long tokensPerMinuteLimit,
+  private ConsumedTokens consume(String clientId, String modelId, long tokens,
+      long tokensPerMinuteLimit,
       long tokensPerDayLimit) throws ExecutionException, InterruptedException {
     String minuteKey = keyGenerator.generateKey(clientId, modelId, "minute");
     String dayKey = keyGenerator.generateKey(clientId, modelId, "day");
@@ -137,9 +149,9 @@ public class RedisTokenStore implements TokenStore {
     updateTokenCounts(minuteKey, minuteCounts);
     updateTokenCounts(dayKey, dayCounts);
     ConsumedTokens consumedTokens = new ConsumedTokens();
-    consumedTokens.setPerDayTokens(tokenCountManager.sumTokens(getTokenCounts(minuteKey)));
+    consumedTokens.setPerMinTokens(tokenCountManager.sumTokens(getTokenCounts(minuteKey)));
     consumedTokens.setPerDayTokens(tokenCountManager.sumTokens(getTokenCounts(dayKey)));
-   return consumedTokens;
+    return consumedTokens;
   }
 
   private Deque<TokenCount> getTokenCounts(String key) {

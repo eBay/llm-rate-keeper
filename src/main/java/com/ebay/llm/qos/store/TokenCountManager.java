@@ -1,5 +1,6 @@
 package com.ebay.llm.qos.store;
 
+import com.ebay.llm.qos.model.TokenCount;
 import java.time.Instant;
 import java.util.Deque;
 import java.util.LinkedList;
