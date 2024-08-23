@@ -5,7 +5,7 @@
   <groupId>com.ebay.llm</groupId>
   <artifactId>llm-rate-keeper</artifactId>
   <modelVersion>4.0.0</modelVersion>
-  <version>1.0.3</version>
+  <version>1.1.0</version>
 
   <properties>
     <maven.compiler.source>17</maven.compiler.source>
