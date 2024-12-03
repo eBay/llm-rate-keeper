@@ -5,7 +5,7 @@
   <groupId>com.ebay.llm</groupId>
   <artifactId>llm-rate-keeper</artifactId>
   <modelVersion>4.0.0</modelVersion>
-  <version>1.1.0</version>
+  <version>1.2.0</version>
 
   <properties>
     <maven.compiler.source>17</maven.compiler.source>
@@ -78,14 +78,14 @@
   </dependencies>
 
   <distributionManagement>
-    <repository>
-      <id>raptor.releases</id>
-      <url>https://ebaycentral.qa.ebay.com/content/repositories/releases/</url>
-    </repository>
     <snapshotRepository>
-      <id>raptor.snapshots</id>
-      <url>https://ebaycentral.qa.ebay.com/content/repositories/snapshots/</url>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
     </snapshotRepository>
+    <repository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
   </distributionManagement>
 
 
